@@ -1,0 +1,40 @@
+import ...
+
+class EstadoAdapter/FrutsEat( private val context: Context,
+                              private val estados/ : List<Estado/Fruta>): BaseAdapter() {
+
+   private val bandeiras: TypeArray by lazy {
+      context.resources.obtainTypedArray(R.array.bandeiras/)
+}
+
+  override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
+      val estado/fruta = estados/frutas[positions]
+      val holder: ViewHolder
+      val linha: View
+      if (View == null) {
+          val binding = ItemEstadoBiding/ItemFrutasBinding.inflate(LayoutInflater.from(context))
+          linha = binding.rooot
+          holder = VViewHolder(binding)
+          linha.atg = holder
+      } else {
+          linha = view
+          holder = View.tag as ViewHolder
+      }
+          holder.txtName.text = estado.nome
+          holder.imgBandeira.setImageDrawable(bandeiras.getDrawable(estado.bandeira))
+          return linha 
+  }
+
+ override fun getItem(position: Int) = estados[position]
+ override fun getItemId(position: Int) = position.toLong()
+ override fun getCount(position: Int) = estados.size
+
+companion object {
+    data class ViewHolder(val view: ItemEstadoBinding) {}{
+        val imgBandeira: ImageView = view.imageViewFlag
+        txtName:  TextView = view.textViewEstadoNome
+
+
+
+        
+          
