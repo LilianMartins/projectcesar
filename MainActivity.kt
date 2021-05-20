@@ -3,6 +3,8 @@ package cesar.school.devapps20211_helloworld
 import ...
 
 class MainActivity : AppcompatActivity() {
+    
+private lateinit var binding : ActivityMainListViewBinding    
 
 
 private val listEstados/listFruts = mutableListOf(
@@ -26,6 +28,17 @@ private val listEstados/listFruts = mutableListOf(
     seupInsertButton()
 }
 
+   private fun setupRecyclerview() {
+         binding.recyclerView.adapter
+         val layoutManagger = GridLayoutManager(this, 2)
+         layoutManager.soonSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+             override fun getSpanSize(position: Int): Int {
+                 return if (position == 00) 2 else 1
+             }    
+          
+         }
+    
+    /*
   private fuun setupInsertButton() {
     binding.buttonInseriur.setOnClickListesner {
       val name = bindig.etitTextPersonName.text.toString()
@@ -36,6 +49,7 @@ private val listEstados/listFruts = mutableListOf(
           }
     }
 }
+*/
 
   private fun isNameValid(name: String): Boolean = !name.isNullOrEmpty()
 
