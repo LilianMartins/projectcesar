@@ -1,63 +1,74 @@
-package cesar.school.devapps20211_helloworld
+package school.cesar.devapp20211.activities
 
-import ...
+import ... 
 
-class MainActivity : AppcompatActivity() {
-    
-private lateinit var binding : ActivityMainListViewBinding    
+class MainActivity :  ApppCompatActivity( ) {
 
-
-private val listEstados/listFruts = mutableListOf(
-    Fruta("Morango", 0),
-    Fruta("Limao", 1),
-    Fruta("Banana", 2),
-    Fruta("Acabaxi", 3),
-    Fruta("Uva", 4),
-    Fruta("Cereja", 5),
+private lateinit var binding : ActivityMainBinding 
+private var fruits = mutableListOf(
+   Fruit ( name: " ", description: " " ), 
+   Fruit ( name: " ", description: " " ), 
+   Fruit ( name: " ", description: " " ), 
+   Fruit ( name: " ", description: " " ), 
 )
 
-  private val mEstadoAdapter/gotFrutsEat by lazy { EstadoAdapter/FrutsEat(this, listEstados/lisFruts) }
-  private lateinit var binding : ActivityMainListviewBinding
-
-
-  override fun onCreat(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState: Bundlle?)  {
-    binding = ActivityMainListviewBing.inflate(layouotInflater)
-    setContentView(binding.root)
-    setupListview()
-    seupInsertButton()
+companion object {
+   const val REQUEST_CODE = 1
+   const val EXTRA_FRUIT = "EXTRA_FRUIT"
+   const val EXTRA_FRUIT_LIST = " EXTRA_FRUIT_LIST"
+   var fruitsImages: TypedArray? = null
 }
 
-   private fun setupRecyclerview() {
-         binding.recyclerView.adapter
-         val layoutManagger = GridLayoutManager(this, 2)
-         layoutManager.soonSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-             override fun getSpanSize(position: Int): Int {
-                 return if (position == 00) 2 else 1
-             }    
-          
-         }
-    
-    /*
-  private fuun setupInsertButton() {
-    binding.buttonInseriur.setOnClickListesner {
-      val name = bindig.etitTextPersonName.text.toString()
+private lateinit var fruitAdapter: FruitsRecycleViewAdapter
 
-      if (isNameValid(name)) {
-          listEstados/listFruts.add(Estado/Fruta(name, (0..2).randon()))
-          mEstadoAdapter/gotFrutsEat.notifyDataSetChanged()
-          }
-    }
+override fun onCreate(savedInstanceState: Buncle?) {
+   super.onCreate(savedInstanceState)
+   binding = ActivityMainBinding.inflate(layoutInflater)
+   setContentView(binding.root)
+
+   if (savedInstanceState != null) {
+      fruits = savedInstanceState.getParcelableArrayList<Fruit>(EXTRA_FRUIT_LIST) 
+  }
 }
-*/
 
-  private fun isNameValid(name: String): Boolean = !name.isNullOrEmpty()
+override fun onResume( )  {
+      super.onResume( )
 
-  private fun setupListview() {
-      binding.listView.setOnItemClickListener { parent, view , position, id -> 
-      val (nome, bandeira) = listEstados[position]
-      Toast.makeText( context: this, text: "Click: $nome $bandeira", Toast.LENGTH_SHORT).show()
- }
-  binding.listView.adapter = mEstadoAdapter
- }
-}     
+       fruitAdapter = FruitsRecyclerViewAdapter (context: this, fruits, this: :onItemClickListener)
+       fruitImages = resources.obtainTypedArray(R.array.fruits)
+
+       binding.recyclerViewFruits.adapter = fruitAdapter
+       binding.recyclerViewFruits.layoutManager = LinearLayoutManager (context: this)
+}
+
+private fun onIitemClickListner(fruit: Fruit) {
+       val fruitDesc = Intent(packageContext: this, DescriptionFruitsActivity::class.java)
+       fruitDesc.putExtra( EXTRA_FRUIT, fruit)
+       startActivity(fruitDesc)
+}
+
+fun onClickAddFruits(view: View)  {
+       val addFruitsActivity = Intent(packageContext: this, AddFruitsActivity::class.java)
+       startActivityForResult(addFruitsActivity, REQUEST_CODE)
+}
+
+
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST)CODE) {
+        data?.getParcelableExtra<Fruit>(EXTRA_FRUIT)?.let { it: Fruit
+            fruits.add(it)
+            fruitAdapter.nodifyItemInserted(fruits.lastIndex)
+        }
+  }
+}
+
+override fun onSaveInstanceState(outState: Bundle) {
+            super onSaveInstaneState(OutState)         
+            outState.putParcelableArrayList(EXTRA_FRUIT_LIST, ArrayList(fruits))
+  }
+}
+
+
+     
+
