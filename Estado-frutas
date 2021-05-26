@@ -1,5 +1,0 @@
-package cesar.school.devapps202111_helloworld.model
-
-data class Frutas(val nome: String, var frutas: Int)
-
-
